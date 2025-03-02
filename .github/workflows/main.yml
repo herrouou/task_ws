@@ -1,0 +1,57 @@
+name: ROS2 CI with Clang-Format
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Run clang-format check
+        uses: DoozyX/clang-format-lint-action@v0.18.1
+        with:
+          source: '.'
+          exclude: './third_party ./external'
+          extensions: 'h,cpp'
+          clangFormatVersion: 18
+          style: file
+
+  build:
+    runs-on: ubuntu-22.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up ROS 2 Humble
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: humble
+
+      - name: Install additional dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-colcon-common-extensions
+          sudo apt-get install -y libcanberra-gtk-module libcanberra-gtk3-module
+          sudo apt-get install -y ros-humble-generate-parameter-library
+          sudo apt-get install -y ros-humble-ament-clang-format
+          sudo apt-get install -y ros-humble-ament-cmake
+          sudo apt-cache search ros-humble-cv-bridge && sudo apt-get install -y ros-humble-cv-bridge || echo "cv_bridge not available via apt"
+
+      - name: Build with colcon
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon build
+
+      - name: Run tests
+        run: |
+          source /opt/ros/humble/setup.bash
+          source install/setup.bash
+          colcon test
+          colcon test-result --verbose
