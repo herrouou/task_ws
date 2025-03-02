@@ -15,7 +15,7 @@
  */
 
 #include "sine_wave_cpp/sine_wave_parameters.hpp"
-#include "sine_wave_cpp/sine_wave_reciever.hpp"
+#include "sine_wave_cpp/sine_wave_receiver.hpp"
 
 #include <thread>
 
@@ -27,18 +27,18 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
 
   // create a standard rclcpp::Node
-  auto node = std::make_shared<rclcpp::Node>("sine_wave_reciever");
+  auto node = std::make_shared<rclcpp::Node>("sine_wave_receiver");
 
   // create a parameter listener using generated library
   auto param_listener = std::make_shared<sine_wave::ParamListener>(node);
 
   auto params = param_listener->get_params();
 
-  auto sine_wave_reciever = std::make_shared<SineWaveReciever>(node, params);
+  auto sine_wave_receiver = std::make_shared<SineWaveReceiver>(node, params);
 
   RCLCPP_INFO(
     node->get_logger(),
-    "Sine Wave Reciever node is running and tring to recieve msg on 'sine_wave' topic.");
+    "Sine Wave Receiver node is running and tring to recieve msg on 'sine_wave' topic.");
 
   // Spin the node
   rclcpp::executors::MultiThreadedExecutor executor(rclcpp::ExecutorOptions(), 2);

@@ -18,11 +18,11 @@
 //  #include <rclcpp/rclcpp.hpp>
 //  #include <filesystem>
 
-//  #include "sine_wave_cpp/sine_wave_reciever.hpp"
+//  #include "sine_wave_cpp/sine_wave_receiver.hpp"
 //  #include "sine_wave_cpp/sine_wave_parameters.hpp"
 //  #include "sine_wave_cpp/srv/convert_image.hpp"
 
-//  class SineWaveRecieverTest : public ::testing::Test
+//  class SineWaveReceiverTest : public ::testing::Test
 //  {
 //  protected:
 //    static void SetUpTestSuite()
@@ -46,10 +46,10 @@
 // }
 
 //  // test initial
-//  TEST_F(SineWaveRecieverTest, Initialization)
+//  TEST_F(SineWaveReceiverTest, Initialization)
 //  {
 //    // create a test node
-//    auto node = std::make_shared<rclcpp::Node>("test_reciever_node");
+//    auto node = std::make_shared<rclcpp::Node>("test_receiver_node");
 
 //    // create parameter
 //    sine_wave::Params params;
@@ -60,15 +60,15 @@
 
 //    // if there is no fatal value, then passed
 //    EXPECT_NO_THROW({
-//      SineWaveReciever reciever(node, params);
+//      SineWaveReceiver receiver(node, params);
 //    });
 //  }
 
 //  // test service fuction
-//  TEST_F(SineWaveRecieverTest, ServiceCall)
+//  TEST_F(SineWaveReceiverTest, ServiceCall)
 //  {
 //    // create a node
-//    auto node = std::make_shared<rclcpp::Node>("test_reciever_service_node");
+//    auto node = std::make_shared<rclcpp::Node>("test_receiver_service_node");
 
 //    // param
 //    sine_wave::Params params;
@@ -77,8 +77,8 @@
 //    params.phase = 0.0;
 //    params.publisher_frequency = 10.0;
 
-//    // create SineWaveReciever
-//    SineWaveReciever reciever(node, params);
+//    // create SineWaveReceiver
+//    SineWaveReceiver receiver(node, params);
 
 //    // create client and wait for service
 //    auto client = node->create_client<sine_wave_cpp::srv::ConvertImage>("convert_image");
@@ -116,7 +116,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "sine_wave_cpp/sine_wave_reciever.hpp"
+#include "sine_wave_cpp/sine_wave_receiver.hpp"
 
 #include "sine_wave_cpp/sine_wave_parameters.hpp"
 #include "sine_wave_cpp/srv/convert_image.hpp"
@@ -127,7 +127,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-class SineWaveRecieverTest : public ::testing::Test
+class SineWaveReceiverTest : public ::testing::Test
 {
 protected:
   static void SetUpTestSuite() { rclcpp::init(0, nullptr); }
@@ -144,10 +144,10 @@ std::string get_image_path()
 }
 
 // test initial
-TEST_F(SineWaveRecieverTest, Initialization)
+TEST_F(SineWaveReceiverTest, Initialization)
 {
   // create a test node
-  auto node = std::make_shared<rclcpp::Node>("test_reciever_node");
+  auto node = std::make_shared<rclcpp::Node>("test_receiver_node");
 
   // create parameter
   sine_wave::Params params;
@@ -157,14 +157,14 @@ TEST_F(SineWaveRecieverTest, Initialization)
   params.publisher_frequency = 10.0;
 
   // if there is no fatal value, then passed
-  EXPECT_NO_THROW({ SineWaveReciever reciever(node, params); });
+  EXPECT_NO_THROW({ SineWaveReceiver receiver(node, params); });
 }
 
 // test service fuction
-TEST_F(SineWaveRecieverTest, ServiceAvailability)
+TEST_F(SineWaveReceiverTest, ServiceAvailability)
 {
   // create a node
-  auto node = std::make_shared<rclcpp::Node>("test_reciever_service_node");
+  auto node = std::make_shared<rclcpp::Node>("test_receiver_service_node");
 
   // param
   sine_wave::Params params;
@@ -173,8 +173,8 @@ TEST_F(SineWaveRecieverTest, ServiceAvailability)
   params.phase = 0.0;
   params.publisher_frequency = 10.0;
 
-  // create SineWaveReciever
-  SineWaveReciever reciever(node, params);
+  // create SineWaveReceiver
+  SineWaveReceiver receiver(node, params);
 
   // create client and wait for service
   auto client = node->create_client<sine_wave_cpp::srv::ConvertImage>("convert_image");
@@ -185,7 +185,7 @@ TEST_F(SineWaveRecieverTest, ServiceAvailability)
 }
 
 // verify file existence without processing
-TEST_F(SineWaveRecieverTest, ImageFileExists)
+TEST_F(SineWaveReceiverTest, ImageFileExists)
 {
   std::string image_path = get_image_path();
   EXPECT_TRUE(std::filesystem::exists(image_path)) << "Test image file not found: " << image_path;

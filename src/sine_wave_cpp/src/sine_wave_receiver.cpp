@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "sine_wave_cpp/sine_wave_reciever.hpp"
+#include "sine_wave_cpp/sine_wave_receiver.hpp"
 
 #include "sine_wave_cpp/sine_wave_parameters.hpp"
 
@@ -27,7 +27,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/service.hpp>
 
-SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave::Params & params)
+SineWaveReceiver::SineWaveReceiver(rclcpp::Node::SharedPtr node, const sine_wave::Params & params)
 : node_(node),
   amplitude_(params.amplitude),
   angular_frequency_(params.angular_frequency),
@@ -83,20 +83,20 @@ SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave
   rclcpp::SubscriptionOptions sub_options;
   sub_options.callback_group = subscription_cb_group;
   subscription_ = node_->create_subscription<sine_wave_cpp::msg::Signal>(
-    "sine_wave", 10, std::bind(&SineWaveReciever::sinewaveCallback, this, std::placeholders::_1),
+    "sine_wave", 10, std::bind(&SineWaveReceiver::sinewaveCallback, this, std::placeholders::_1),
     sub_options);
 
   // create Service
   service_ = node_->create_service<sine_wave_cpp::srv::ConvertImage>(
     "convert_image",
     std::bind(
-      &SineWaveReciever::convertImageService, this, std::placeholders::_1, std::placeholders::_2),
+      &SineWaveReceiver::convertImageService, this, std::placeholders::_1, std::placeholders::_2),
     rmw_qos_profile_default);
 
-  RCLCPP_INFO(node_->get_logger(), "SineWaveReciever node with custom Service is ready.");
+  RCLCPP_INFO(node_->get_logger(), "SineWaveReceiver node with custom Service is ready.");
 }
 
-void SineWaveReciever::sinewaveCallback(const sine_wave_cpp::msg::Signal::SharedPtr msg)
+void SineWaveReceiver::sinewaveCallback(const sine_wave_cpp::msg::Signal::SharedPtr msg)
 {
   double sine_value = msg->data;
   auto stamp = msg->header.stamp;
@@ -105,7 +105,7 @@ void SineWaveReciever::sinewaveCallback(const sine_wave_cpp::msg::Signal::Shared
     stamp.nanosec);
 }
 
-void SineWaveReciever::convertImageService(
+void SineWaveReceiver::convertImageService(
   const std::shared_ptr<sine_wave_cpp::srv::ConvertImage::Request> request,
   std::shared_ptr<sine_wave_cpp::srv::ConvertImage::Response> response)
 {

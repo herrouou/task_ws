@@ -12,11 +12,11 @@ def generate_launch_description():
             name='sine_wave_publisher',
             output='screen'
         ),
-        # run the reciever
+        # run the receiver
         Node(
             package='sine_wave_cpp',
-            executable='sine_wave_reciever_node',
-            name='sine_wave_reciever',
+            executable='sine_wave_receiver_node',
+            name='sine_wave_receiver',
             output='screen'
         )
     ])

@@ -74,26 +74,26 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# For reciever
-add_executable(sine_wave_reciever_node
-  src/sine_wave_reciever_node.cpp
-  src/sine_wave_reciever.cpp
+# For receiver
+add_executable(sine_wave_receiver_node
+  src/sine_wave_receiver_node.cpp
+  src/sine_wave_receiver.cpp
 )
 
-target_include_directories(sine_wave_reciever_node PUBLIC
+target_include_directories(sine_wave_receiver_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(sine_wave_reciever_node
+target_link_libraries(sine_wave_receiver_node
   sine_wave_parameters  # Link to the generated parameter library
   ${cpp_typesupport_target}
   ${OpenCV_LIBRARIES}
   ${cv_bridge_LIBRARIES}
 )
 
-ament_target_dependencies(sine_wave_reciever_node
+ament_target_dependencies(sine_wave_receiver_node
   rclcpp
   std_msgs
   cv_bridge
@@ -101,12 +101,12 @@ ament_target_dependencies(sine_wave_reciever_node
 )
 
 install(TARGETS
-  sine_wave_reciever_node
+  sine_wave_receiver_node
   sine_wave_parameters  # Also install the generated library
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(TARGETS sine_wave_publisher_node sine_wave_reciever_node sine_wave_parameters
+install(TARGETS sine_wave_publisher_node sine_wave_receiver_node sine_wave_parameters
   EXPORT ${PROJECT_NAME}Targets)
 
 ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
@@ -139,22 +139,22 @@ ament_target_dependencies(sine_wave_publisher_lib
   std_msgs
 )
 
-# add library for SineWaveReciever
-add_library(sine_wave_reciever_lib
-  src/sine_wave_reciever.cpp
+# add library for SineWaveReceiver
+add_library(sine_wave_receiver_lib
+  src/sine_wave_receiver.cpp
 )
-target_include_directories(sine_wave_reciever_lib PUBLIC
+target_include_directories(sine_wave_receiver_lib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>
   $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(sine_wave_reciever_lib
+target_link_libraries(sine_wave_receiver_lib
   sine_wave_parameters
   ${cpp_typesupport_target}
   ${OpenCV_LIBRARIES}
   ${cv_bridge_LIBRARIES}
 )
-ament_target_dependencies(sine_wave_reciever_lib
+ament_target_dependencies(sine_wave_receiver_lib
   rclcpp
   std_msgs
   cv_bridge
@@ -189,27 +189,27 @@ if(BUILD_TESTING)
     INSTALL_RPATH "$<TARGET_FILE_DIR:sine_wave_publisher_lib>;/opt/ros/humble/lib;/opt/ros/humble/lib/x86_64-linux-gnu"
   )
 
-  # Reciever test
-  ament_add_gtest(${PROJECT_NAME}_sine_wave_reciever_test test/sine_wave_reciever_test.cpp)
-  target_include_directories(${PROJECT_NAME}_sine_wave_reciever_test PUBLIC
+  # Receiver test
+  ament_add_gtest(${PROJECT_NAME}_sine_wave_receiver_test test/sine_wave_receiver_test.cpp)
+  target_include_directories(${PROJECT_NAME}_sine_wave_receiver_test PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
-  target_link_libraries(${PROJECT_NAME}_sine_wave_reciever_test
-    sine_wave_reciever_lib
+  target_link_libraries(${PROJECT_NAME}_sine_wave_receiver_test
+    sine_wave_receiver_lib
     sine_wave_parameters
     ${cpp_typesupport_target}
   )
-  ament_target_dependencies(${PROJECT_NAME}_sine_wave_reciever_test
+  ament_target_dependencies(${PROJECT_NAME}_sine_wave_receiver_test
     rclcpp
     std_msgs
     cv_bridge
     sensor_msgs
     OpenCV
   )
-  set_target_properties(${PROJECT_NAME}_sine_wave_reciever_test PROPERTIES
+  set_target_properties(${PROJECT_NAME}_sine_wave_receiver_test PROPERTIES
     BUILD_WITH_INSTALL_RPATH TRUE
-    INSTALL_RPATH "$<TARGET_FILE_DIR:sine_wave_reciever_lib>;/opt/ros/humble/lib;/opt/ros/humble/lib/x86_64-linux-gnu"
+    INSTALL_RPATH "$<TARGET_FILE_DIR:sine_wave_receiver_lib>;/opt/ros/humble/lib;/opt/ros/humble/lib/x86_64-linux-gnu"
   )
 endif()
 
