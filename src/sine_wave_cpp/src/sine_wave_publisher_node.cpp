@@ -23,7 +23,7 @@ int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
 
-  // Create a standard rclcpp::Node!
+  // Create a standard rclcpp::Node
   auto node = std::make_shared<rclcpp::Node>("sine_wave_publisher");
 
   // Create a parameter listener by using the generated library

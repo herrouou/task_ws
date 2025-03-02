@@ -72,7 +72,7 @@ SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave
   }
 
   // define the callbackgroup to introduce the multi-thread, use MutuallyExclusive to make
-  // subscription being a extra thread
+  // subscription to be extra thread
   auto subscription_cb_group =
     node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
   auto service_cb_group =
