@@ -17,10 +17,10 @@
 #ifndef SINE_WAVE_CPP__SINE_WAVE_PUBLISHER_HPP_
 #define SINE_WAVE_CPP__SINE_WAVE_PUBLISHER_HPP_
 
+#include "sine_wave_cpp/msg/signal.hpp"
+
 #include <rclcpp/rclcpp.hpp>
-
 #include <std_msgs/msg/float64.hpp>
-
 // Include the generated parameter library header.
 #include <sine_wave_cpp/sine_wave_parameters.hpp>
 
@@ -42,7 +42,7 @@ private:
 
   // declare node, publisher and timer
   rclcpp::Node::SharedPtr node_;
-  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr publisher_;
+  rclcpp::Publisher<sine_wave_cpp::msg::Signal>::SharedPtr publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
   // Sine wave parameters

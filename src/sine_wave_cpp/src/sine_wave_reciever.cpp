@@ -79,7 +79,7 @@ SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave
   // create subscription
   rclcpp::SubscriptionOptions sub_options;
   sub_options.callback_group = subscription_cb_group;
-  subscription_ = node_->create_subscription<std_msgs::msg::Float64>(
+  subscription_ = node_->create_subscription<sine_wave_cpp::msg::Signal>(
     "sine_wave", 10, std::bind(&SineWaveReciever::sinewaveCallback, this, std::placeholders::_1)
     // sub_options
   );
@@ -94,10 +94,15 @@ SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave
   RCLCPP_INFO(node_->get_logger(), "SineWaveReciever node with custom Service is ready.");
 }
 
-void SineWaveReciever::sinewaveCallback(const std_msgs::msg::Float64::SharedPtr msg)
+void SineWaveReciever::sinewaveCallback(const sine_wave_cpp::msg::Signal::SharedPtr msg)
 {
   double sine_value = msg->data;
-  RCLCPP_INFO(node_->get_logger(), "Recieved the sine wave value: %f", sine_value);
+  auto stamp = msg->header.stamp;
+  RCLCPP_INFO(node_->get_logger(),
+              "Received sine wave value: %f, timestamp: %d.%u",
+              sine_value,
+              stamp.sec,
+              stamp.nanosec);
 }
 
 void SineWaveReciever::convertImageService(

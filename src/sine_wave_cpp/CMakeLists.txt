@@ -17,10 +17,11 @@ find_package(OpenCV REQUIRED)
 
 set(dependencies "std_msgs" "rclcpp" "generate_parameter_library")
 
-# srv
+# srv and msg
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "srv/ConvertImage.srv"
-  DEPENDENCIES sensor_msgs
+  "sine_wave_interface/srv/ConvertImage.srv"
+  "sine_wave_interface/msg/Signal.msg"
+  DEPENDENCIES sensor_msgs std_msgs
 )
 
 ament_export_dependencies(rosidl_default_runtime)
@@ -50,11 +51,13 @@ add_executable(sine_wave_publisher_node
 
 target_include_directories(sine_wave_publisher_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/rosidl_generator_cpp>
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(sine_wave_publisher_node # use this only to link the sine_wave_parameters
-  sine_wave_parameters  # Link to the generated parameter library
+target_link_libraries(sine_wave_publisher_node
+  sine_wave_parameters  # parmater
+  ${cpp_typesupport_target}  # msg
 )
 
 ament_target_dependencies(sine_wave_publisher_node # use this to link the basic things
@@ -120,9 +123,12 @@ target_include_directories(sine_wave_publisher_lib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
+
 target_link_libraries(sine_wave_publisher_lib
   sine_wave_parameters
+  ${cpp_typesupport_target}
 )
+
 ament_target_dependencies(sine_wave_publisher_lib
   rclcpp
   std_msgs

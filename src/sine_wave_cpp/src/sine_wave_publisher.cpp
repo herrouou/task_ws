@@ -62,7 +62,7 @@ SineWavePublisher::SineWavePublisher(rclcpp::Node::SharedPtr node, const sine_wa
   }
 
   // Create a publisher on the topic "sine_wave"
-  publisher_ = node_->create_publisher<std_msgs::msg::Float64>("sine_wave", 10);
+  publisher_ = node_->create_publisher<sine_wave_cpp::msg::Signal>("sine_wave", 10);
 
   // Create a timer according to frequency
   auto period = std::chrono::duration<double>(1.0 / frequency_);
@@ -84,7 +84,8 @@ void SineWavePublisher::timerCallback()
   double sine = amplitude_ * std::sin(angular_frequency_ * time_ + phase_);
 
   // Publish the sine wave
-  std_msgs::msg::Float64 msg;
+  sine_wave_cpp::msg::Signal msg;
+  msg.header.stamp = node_->get_clock()->now();
   msg.data = sine;
   publisher_->publish(msg);
 

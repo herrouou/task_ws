@@ -17,6 +17,7 @@
 #ifndef SINE_WAVE_CPP__SINE_WAVE_RECIEVER_HPP_
 #define SINE_WAVE_CPP__SINE_WAVE_RECIEVER_HPP_
 
+#include "sine_wave_cpp/msg/signal.hpp"
 #include "sine_wave_cpp/srv/convert_image.hpp"
 
 #include <rclcpp/rclcpp.hpp>
@@ -44,7 +45,7 @@ private:
    * @brief sine wave callback fuction to process the recieved sine wave
    * @param msg  sine wave msg
    */
-  void sinewaveCallback(const std_msgs::msg::Float64::SharedPtr msg);
+  void sinewaveCallback(const sine_wave_cpp::msg::Signal::SharedPtr msg);
 
   /**
    * @brief image convert service
@@ -57,7 +58,7 @@ private:
 
   // declare node, subscription and service
   rclcpp::Node::SharedPtr node_;
-  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr subscription_;
+  rclcpp::Subscription<sine_wave_cpp::msg::Signal>::SharedPtr subscription_;
   rclcpp::Service<sine_wave_cpp::srv::ConvertImage>::SharedPtr service_;
 
   // Sine wave parameters
