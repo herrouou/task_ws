@@ -23,6 +23,7 @@
 
 #include <cv_bridge/cv_bridge.h>
 
+#include <mutex>
 #include <thread>
 
 SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave::Params & params)
@@ -74,15 +75,15 @@ SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave
   // subscription being a extra thread
   auto subscription_cb_group =
     node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-  // auto service_cb_group = node_->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+  auto service_cb_group =
+    node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
 
   // create subscription
   rclcpp::SubscriptionOptions sub_options;
   sub_options.callback_group = subscription_cb_group;
   subscription_ = node_->create_subscription<sine_wave_cpp::msg::Signal>(
-    "sine_wave", 10, std::bind(&SineWaveReciever::sinewaveCallback, this, std::placeholders::_1)
-    // sub_options
-  );
+    "sine_wave", 10, std::bind(&SineWaveReciever::sinewaveCallback, this, std::placeholders::_1),
+    sub_options);
 
   // create Service
   service_ = node_->create_service<sine_wave_cpp::srv::ConvertImage>(
@@ -125,7 +126,18 @@ void SineWaveReciever::convertImageService(
   cv::Mat gray_img;
   cv::cvtColor(color_img, gray_img, cv::COLOR_BGR2GRAY);
 
-  // 3. visualize it
+  // 3. transform it to sensor_msgs::Image and encoding to "mono8"
+  std_msgs::msg::Header header;
+  header.stamp = node_->now();
+  auto cv_bridge_img = cv_bridge::CvImage(header, "mono8", gray_img);
+  sensor_msgs::msg::Image ros_img_msg = *cv_bridge_img.toImageMsg();
+
+  // 4. set the response
+  response->grayscale_image = ros_img_msg;
+
+  RCLCPP_INFO(node_->get_logger(), "Successfully transform image to gray image!");
+
+  // 5. visualize it
   cv::Mat gray_bgr;
   cv::cvtColor(gray_img, gray_bgr, cv::COLOR_GRAY2BGR);
 
@@ -136,15 +148,10 @@ void SineWaveReciever::convertImageService(
   cv::imshow("oringin image | gray image", concatenated);
   cv::waitKey(0);
   cv::destroyAllWindows();
-
-  // 4. transform it to sensor_msgs::Image and encoding to "mono8"
-  std_msgs::msg::Header header;
-  header.stamp = node_->now();
-  auto cv_bridge_img = cv_bridge::CvImage(header, "mono8", gray_img);
-  sensor_msgs::msg::Image ros_img_msg = *cv_bridge_img.toImageMsg();
-
-  // 5. set the response
-  response->grayscale_image = ros_img_msg;
-
-  RCLCPP_INFO(node_->get_logger(), "Successfully transform image to gray image!");
+  // {
+  //   std::lock_guard<std::mutex> lock(g_img_mutex);
+  //   concatenated.copyTo(g_img_to_display);
+  //   g_new_image_available = true;
+  // }
+  // g_img_cv.notify_one();
 }
