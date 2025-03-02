@@ -118,14 +118,13 @@
  */
 #include "sine_wave_cpp/sine_wave_reciever.hpp"
 
-#include "sine_wave_cpp/sine_wave_parameters.hpp"
-#include "sine_wave_cpp/srv/convert_image.hpp"
-
-#include <rclcpp/rclcpp.hpp>
-
 #include <gtest/gtest.h>  // NOLINT(build/include_order)
 
 #include <filesystem>  // NOLINT(build/include_order)
+#include <rclcpp/rclcpp.hpp>
+
+#include "sine_wave_cpp/sine_wave_parameters.hpp"
+#include "sine_wave_cpp/srv/convert_image.hpp"
 
 class SineWaveRecieverTest : public ::testing::Test
 {

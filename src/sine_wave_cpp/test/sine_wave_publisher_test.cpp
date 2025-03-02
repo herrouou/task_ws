@@ -16,10 +16,10 @@
 
 #include "sine_wave_cpp/sine_wave_publisher.hpp"
 
+#include <gtest/gtest.h>  // NOLINT(build/include_order)
+
 #include <rclcpp/rclcpp.hpp>
 #include <sine_wave_cpp/sine_wave_parameters.hpp>
-
-#include <gtest/gtest.h>  // NOLINT(build/include_order)
 
 TEST(SineWavePublisherTest, Initialization)
 {

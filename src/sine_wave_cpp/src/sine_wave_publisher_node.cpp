@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <rclcpp/rclcpp.hpp>
+
 #include "sine_wave_cpp/sine_wave_parameters.hpp"
 #include "sine_wave_cpp/sine_wave_publisher.hpp"
-
-#include <rclcpp/rclcpp.hpp>
 
 int main(int argc, char * argv[])
 {
