@@ -16,10 +16,10 @@
 
 #include "sine_wave_cpp/sine_wave_publisher.hpp"
 
-#include <gtest/gtest.h>
-
 #include <rclcpp/rclcpp.hpp>
 #include <sine_wave_cpp/sine_wave_parameters.hpp>
+
+#include <gtest/gtest.h>
 
 TEST(SineWavePublisherTest, Initialization)
 {
@@ -36,7 +36,7 @@ TEST(SineWavePublisherTest, Initialization)
   params.publisher_frequency = 10.0;
 
   // check the SineWavePublisher
-  EXPECT_NO_THROW({ SineWavePublisher publisher(node, params);});
+  EXPECT_NO_THROW({ SineWavePublisher publisher(node, params); });
 
   rclcpp::shutdown();
 }

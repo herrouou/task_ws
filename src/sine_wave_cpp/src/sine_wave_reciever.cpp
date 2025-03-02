@@ -16,11 +16,13 @@
 
 #include "sine_wave_cpp/sine_wave_reciever.hpp"
 
+#include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/service.hpp>
 #include <sine_wave_cpp/sine_wave_parameters.hpp>
-#include <opencv2/opencv.hpp>
+
 #include <cv_bridge/cv_bridge.h>
+
 #include <thread>
 
 SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave::Params & params)
@@ -68,26 +70,26 @@ SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave
     phase_ = 0.0;
   }
 
-  // define the callbackgroup to introduce the multi-thread, use MutuallyExclusive to make subscription
-  // being a extra thread
-  auto subscription_cb_group = node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+  // define the callbackgroup to introduce the multi-thread, use MutuallyExclusive to make
+  // subscription being a extra thread
+  auto subscription_cb_group =
+    node_->create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
   // auto service_cb_group = node_->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
 
   // create subscription
   rclcpp::SubscriptionOptions sub_options;
   sub_options.callback_group = subscription_cb_group;
   subscription_ = node_->create_subscription<std_msgs::msg::Float64>(
-    "sine_wave", 10,
-    std::bind(&SineWaveReciever::sinewaveCallback, this, std::placeholders::_1)
+    "sine_wave", 10, std::bind(&SineWaveReciever::sinewaveCallback, this, std::placeholders::_1)
     // sub_options
   );
 
   // create Service
   service_ = node_->create_service<sine_wave_cpp::srv::ConvertImage>(
     "convert_image",
-    std::bind(&SineWaveReciever::convertImageService, this, std::placeholders::_1, std::placeholders::_2),
-    rmw_qos_profile_default
-  );
+    std::bind(
+      &SineWaveReciever::convertImageService, this, std::placeholders::_1, std::placeholders::_2),
+    rmw_qos_profile_default);
 
   RCLCPP_INFO(node_->get_logger(), "SineWaveReciever node with custom Service is ready.");
 }
@@ -103,15 +105,17 @@ void SineWaveReciever::convertImageService(
   std::shared_ptr<sine_wave_cpp::srv::ConvertImage::Response> response)
 {
   // 1. use opencv to read image
-  RCLCPP_INFO(node_->get_logger(), "Service callback invoked. file_path: %s", request->file_path.c_str());
-  
+  RCLCPP_INFO(
+    node_->get_logger(), "Service callback invoked. file_path: %s", request->file_path.c_str());
+
   cv::Mat color_img = cv::imread(request->file_path, cv::IMREAD_COLOR);
   if (color_img.empty()) {
-    RCLCPP_ERROR(node_->get_logger(), "Failed to read image from path: %s", request->file_path.c_str());
+    RCLCPP_ERROR(
+      node_->get_logger(), "Failed to read image from path: %s", request->file_path.c_str());
     response->grayscale_image = sensor_msgs::msg::Image();
     return;
   }
-  
+
   RCLCPP_INFO(node_->get_logger(), "Image successfully read.");
 
   // 2. to gary image
@@ -121,15 +125,14 @@ void SineWaveReciever::convertImageService(
   // 3. visualize it
   cv::Mat gray_bgr;
   cv::cvtColor(gray_img, gray_bgr, cv::COLOR_GRAY2BGR);
-  
+
   cv::Mat concatenated;
   cv::hconcat(color_img, gray_bgr, concatenated);
-  
+
   cv::namedWindow("oringin image | gray image", cv::WINDOW_AUTOSIZE);
   cv::imshow("oringin image | gray image", concatenated);
   cv::waitKey(0);
   cv::destroyAllWindows();
-  
 
   // 4. transform it to sensor_msgs::Image and encoding to "mono8"
   std_msgs::msg::Header header;

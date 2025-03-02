@@ -18,6 +18,7 @@
 #define SINE_WAVE_CPP__SINE_WAVE_PUBLISHER_HPP_
 
 #include <rclcpp/rclcpp.hpp>
+
 #include <std_msgs/msg/float64.hpp>
 
 // Include the generated parameter library header.

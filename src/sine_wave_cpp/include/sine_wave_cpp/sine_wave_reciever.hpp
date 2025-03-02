@@ -17,10 +17,13 @@
 #ifndef SINE_WAVE_CPP__SINE_WAVE_RECIEVER_HPP_
 #define SINE_WAVE_CPP__SINE_WAVE_RECIEVER_HPP_
 
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/float64.hpp>
 #include "sine_wave_cpp/srv/convert_image.hpp"
+
+#include <rclcpp/rclcpp.hpp>
+
 #include <sensor_msgs/msg/image.hpp>
+#include <std_msgs/msg/float64.hpp>
+
 #include <cv_bridge/cv_bridge.h>
 
 // Include the generated parameter library header.
@@ -50,8 +53,7 @@ private:
    */
   void convertImageService(
     const std::shared_ptr<sine_wave_cpp::srv::ConvertImage::Request> request,
-    std::shared_ptr<sine_wave_cpp::srv::ConvertImage::Response> response
-  );
+    std::shared_ptr<sine_wave_cpp::srv::ConvertImage::Response> response);
 
   // declare node, subscription and service
   rclcpp::Node::SharedPtr node_;
