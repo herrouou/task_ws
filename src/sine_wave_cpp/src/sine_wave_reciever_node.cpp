@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#include <opencv2/opencv.hpp>
-#include <rclcpp/rclcpp.hpp>
-#include <thread>
-
 #include "sine_wave_cpp/sine_wave_parameters.hpp"
 #include "sine_wave_cpp/sine_wave_reciever.hpp"
+
+#include <thread>
+
+#include <opencv2/opencv.hpp>
+#include <rclcpp/rclcpp.hpp>
 
 int main(int argc, char * argv[])
 {

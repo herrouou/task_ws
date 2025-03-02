@@ -16,9 +16,9 @@
 
 #include "sine_wave_cpp/sine_wave_publisher.hpp"
 
-#include <rclcpp/rclcpp.hpp>
-
 #include "sine_wave_cpp/sine_wave_parameters.hpp"
+
+#include <rclcpp/rclcpp.hpp>
 
 SineWavePublisher::SineWavePublisher(rclcpp::Node::SharedPtr node, const sine_wave::Params & params)
 : node_(node),

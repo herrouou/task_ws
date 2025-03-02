@@ -16,15 +16,16 @@
 
 #include "sine_wave_cpp/sine_wave_reciever.hpp"
 
+#include "sine_wave_cpp/sine_wave_parameters.hpp"
+
 #include <cv_bridge/cv_bridge.h>  // NOLINT(build/include_order)
 
 #include <mutex>
+#include <thread>
+
 #include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/service.hpp>
-#include <thread>
-
-#include "sine_wave_cpp/sine_wave_parameters.hpp"
 
 SineWaveReciever::SineWaveReciever(rclcpp::Node::SharedPtr node, const sine_wave::Params & params)
 : node_(node),

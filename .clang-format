@@ -45,3 +45,28 @@ ReflowComments: true
 #   - Regex: '".*"'
 #     Priority: 1
 #     CaseSensitive: true
+IncludeCategories:
+
+  - Regex: '^".*"'
+    Priority: 1
+    CaseSensitive: true
+
+
+  - Regex: '^<.*\.h>'
+    Priority: 2
+    CaseSensitive: true
+
+
+  - Regex: '^<[a-z_]+>'
+    Priority: 3
+    CaseSensitive: true
+
+
+  - Regex: '^<boost/.*>'
+    Priority: 4
+    CaseSensitive: true
+
+
+  - Regex: '^<.*>'
+    Priority: 5
+    CaseSensitive: true
