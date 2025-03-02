@@ -18,12 +18,13 @@
 #define SINE_WAVE_CPP__SINE_WAVE_PUBLISHER_HPP_
 
 #include "sine_wave_cpp/msg/signal.hpp"
+#include "sine_wave_cpp/sine_wave_parameters.hpp"
 
 #include <rclcpp/rclcpp.hpp>
 
 #include <std_msgs/msg/float64.hpp>
+
 // Include the generated parameter library header.
-#include <sine_wave_cpp/sine_wave_parameters.hpp>
 
 class SineWavePublisher
 {

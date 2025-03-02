@@ -167,14 +167,8 @@ ament_target_dependencies(sine_wave_reciever_lib
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
 
-  # find_package(ament_lint_auto REQUIRED)
-  # ament_lint_auto_find_test_dependencies()
-  # # ignore uncrustify error
-  # set(ament_cmake_uncrustify_FOUND TRUE)
-  # # ignore xmllint error
-  # set(ament_cmake_xmllint_FOUND TRUE)
-  # # ignore copyright error
-  # set(ament_cmake_copyright_FOUND TRUE)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
 
   # Publisher test
   ament_add_gtest(${PROJECT_NAME}_sine_wave_publisher_test test/sine_wave_publisher_test.cpp)
@@ -213,10 +207,10 @@ if(BUILD_TESTING)
     sensor_msgs
     OpenCV
   )
- set_target_properties(${PROJECT_NAME}_sine_wave_reciever_test PROPERTIES
-  BUILD_WITH_INSTALL_RPATH TRUE
-  INSTALL_RPATH "$<TARGET_FILE_DIR:sine_wave_reciever_lib>;/opt/ros/humble/lib;/opt/ros/humble/lib/x86_64-linux-gnu"
- )
+  set_target_properties(${PROJECT_NAME}_sine_wave_reciever_test PROPERTIES
+    BUILD_WITH_INSTALL_RPATH TRUE
+    INSTALL_RPATH "$<TARGET_FILE_DIR:sine_wave_reciever_lib>;/opt/ros/humble/lib;/opt/ros/humble/lib/x86_64-linux-gnu"
+  )
 endif()
 
 ament_package()

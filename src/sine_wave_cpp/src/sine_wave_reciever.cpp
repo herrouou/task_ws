@@ -16,12 +16,13 @@
 
 #include "sine_wave_cpp/sine_wave_reciever.hpp"
 
+#include "sine_wave_cpp/sine_wave_parameters.hpp"
+
 #include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/service.hpp>
-#include <sine_wave_cpp/sine_wave_parameters.hpp>
 
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.h>  // NOLINT(build/include_order)
 
 #include <mutex>
 #include <thread>

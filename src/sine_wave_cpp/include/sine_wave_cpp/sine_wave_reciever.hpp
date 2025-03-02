@@ -18,17 +18,19 @@
 #define SINE_WAVE_CPP__SINE_WAVE_RECIEVER_HPP_
 
 #include "sine_wave_cpp/msg/signal.hpp"
+#include "sine_wave_cpp/sine_wave_parameters.hpp"
 #include "sine_wave_cpp/srv/convert_image.hpp"
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp.hpp>  // NOLINT(build/include_order)
 
-#include <sensor_msgs/msg/image.hpp>
-#include <std_msgs/msg/float64.hpp>
+#include <sensor_msgs/msg/image.hpp>  // NOLINT(build/include_order)
+#include <std_msgs/msg/float64.hpp>   // NOLINT(build/include_order)
 
-#include <cv_bridge/cv_bridge.h>
+#include <cv_bridge/cv_bridge.h>  // NOLINT(build/include_order)
+
+#include <memory>  // NOLINT(build/include_order)
 
 // Include the generated parameter library header.
-#include <sine_wave_cpp/sine_wave_parameters.hpp>
 
 class SineWaveReciever
 {

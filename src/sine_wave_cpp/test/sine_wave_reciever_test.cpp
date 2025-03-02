@@ -123,9 +123,9 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include <gtest/gtest.h>
+#include <gtest/gtest.h>  // NOLINT(build/include_order)
 
-#include <filesystem>
+#include <filesystem>  // NOLINT(build/include_order)
 
 class SineWaveRecieverTest : public ::testing::Test
 {

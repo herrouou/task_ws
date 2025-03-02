@@ -7,9 +7,9 @@
   <maintainer email="ziou@todo.todo">ziou</maintainer>
   <license>Apache-2.0</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
   <member_of_group>rosidl_interface_packages</member_of_group>
 
+  <depend>ament_cmake</depend>
   <depend>cv_bridge</depend>
   <depend>generate_parameter_library</depend>
   <depend>opencv_core</depend>
@@ -22,9 +22,11 @@
   <test_depend>ament_cmake_clang_format</test_depend>
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
-
-
+  <!-- <test_depend>ament_lint_common</test_depend> -->
+  <!-- add test dependencies on any linter, e.g. -->
+  <test_depend>ament_cmake_lint_cmake</test_depend>
+  <test_depend>ament_cmake_cppcheck</test_depend>
+  <test_depend>ament_cmake_cpplint</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
