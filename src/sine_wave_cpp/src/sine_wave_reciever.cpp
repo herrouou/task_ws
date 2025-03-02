@@ -98,11 +98,9 @@ void SineWaveReciever::sinewaveCallback(const sine_wave_cpp::msg::Signal::Shared
 {
   double sine_value = msg->data;
   auto stamp = msg->header.stamp;
-  RCLCPP_INFO(node_->get_logger(),
-              "Received sine wave value: %f, timestamp: %d.%u",
-              sine_value,
-              stamp.sec,
-              stamp.nanosec);
+  RCLCPP_INFO(
+    node_->get_logger(), "Received sine wave value: %f, timestamp: %d.%u", sine_value, stamp.sec,
+    stamp.nanosec);
 }
 
 void SineWaveReciever::convertImageService(
