@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        # run the publisher
+        Node(
+            package='sine_wave_cpp',
+            executable='sine_wave_publisher_node',
+            name='sine_wave_publisher',
+            output='screen'
+        ),
+        # run the reciever
+        Node(
+            package='sine_wave_cpp',
+            executable='sine_wave_reciever_node',
+            name='sine_wave_reciever',
+            output='screen'
+        )
+    ])

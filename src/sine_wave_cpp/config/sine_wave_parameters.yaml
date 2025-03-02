@@ -1,0 +1,25 @@
+sine_wave:
+  publisher_frequency:
+    type: double
+    default_value: 10.0
+    description: "Publisher frequency of sine wave."
+    validation:
+      bounds<>: [0.001, 99999.9]
+  amplitude:
+    type: double
+    default_value: 1.0
+    description: "Amplitude of sine wave."
+    validation:
+      bounds<>: [0.0000001, 99999.9]
+  angular_frequency:
+    type: double
+    default_value: 1.0
+    description: "Angular frequency of sine wave."
+    validation:
+      bounds<>: [0.000001, 99999.9]
+  phase:
+    type: double
+    default_value: 0.0
+    description: "Phase (radians) of sine wave."
+    validation:
+      bounds<>: [-6.283184, 6.283184]
