@@ -26,7 +26,7 @@ int main(int argc, char * argv[])
   // Create a standard rclcpp::Node!
   auto node = std::make_shared<rclcpp::Node>("sine_wave_publisher");
 
-  // Create a parameter listener using the generated library
+  // Create a parameter listener by using the generated library
   auto param_listener = std::make_shared<sine_wave::ParamListener>(node);
 
   auto params = param_listener->get_params();
