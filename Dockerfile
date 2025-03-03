@@ -4,7 +4,10 @@ FROM ros:humble
 # dependencies and tools
 RUN apt-get update && apt-get install -y \
     libcanberra-gtk-module \
-    libcanberra-gtk3-module \
+    sudo apt-get install libcanberra-gtk-module libcanberra-gtk3-module \
+    sudo apt install python3-autopep8 \
+    sudo apt install python3-ament-pycodestyle \
+    sudo apt install clang-format \
     ros-humble-plotjuggler-ros \
     ros-humble-generate-parameter-library \
     ros-humble-ament-clang-format \

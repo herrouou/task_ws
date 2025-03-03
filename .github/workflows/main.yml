@@ -47,6 +47,7 @@ jobs:
           sudo apt-get install -y ros-humble-ament-clang-format
           sudo apt-get install -y ros-humble-ament-cmake
           sudo apt-get install -y libcanberra-gtk-module libcanberra-gtk3-module
+          sudo apt install -y ros-humble-plotjuggler-ros
           sudo apt-cache search ros-humble-cv-bridge && sudo apt-get install -y ros-humble-cv-bridge || echo "cv_bridge not available via apt"
 
       - name: Build with colcon

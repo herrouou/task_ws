@@ -162,6 +162,9 @@ ament_target_dependencies(sine_wave_receiver_lib
   OpenCV
 )
 
+install(DIRECTORY config
+  DESTINATION share/sine_wave_cpp
+)
 
 # test:
 if(BUILD_TESTING)
