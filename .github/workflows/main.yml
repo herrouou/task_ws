@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Python code style check
         run: |
           sudo apt install python3-ament-pycodestyle
-          ament_pycodestyle sine_wave_cpp sine_wave_py
+          ament_pycodestyle src/sine_wave_py src/sine_wave_cpp
 
   build:
     runs-on: ubuntu-22.04
