@@ -25,9 +25,9 @@ from sine_wave_py.sine_wave_parameters import sine_wave_parameters
 
 
 class SineWaveReceiver:
-    """Class to receive sine wave data and provide image conversion service."""
+    """Class to receive sine wave data and provide image conversion service with dynamic parameter updates."""
 
-    def __init__(self, node):
+    def __init__(self, node: Node):
         """
         Initialize the sine wave receiver.
 
@@ -36,7 +36,8 @@ class SineWaveReceiver:
         """
         self.node = node
         self.param_listener = sine_wave_parameters.ParamListener(self.node)
-        self.params = self.param_listener.get_params()  # get params
+        self.params = self.param_listener.get_params()  # get initial parameters
+
         # Get parameters
         self.amplitude = self.params.amplitude
         self.angular_frequency = self.params.angular_frequency
@@ -69,6 +70,9 @@ class SineWaveReceiver:
 
         # Initialize bridge for OpenCV conversion
         self.bridge = CvBridge()
+
+        # Create a timer for checking parameter updates (every 0.3 seconds)
+        self.update_timer = self.node.create_timer(0.3, self.update_params_callback)
 
         self.node.get_logger().info(
             "SineWaveReceiver node with custom Service is ready."
@@ -130,7 +134,7 @@ class SineWaveReceiver:
 
     def convert_image_service(self, request, response):
         """
-        Service to convert color image to grayscale.
+        Service to convert a color image to grayscale.
 
         Args:
             request: Service request containing file path
@@ -139,12 +143,11 @@ class SineWaveReceiver:
         Returns:
             Response with grayscale image
         """
-        # Log service call
         self.node.get_logger().info(
             f"Service callback invoked. file_path: {request.file_path}"
         )
 
-        # Read the image
+        # Read the image using OpenCV
         color_img = cv2.imread(request.file_path, cv2.IMREAD_COLOR)
         if color_img is None:
             self.node.get_logger().error(
@@ -157,14 +160,12 @@ class SineWaveReceiver:
         # Convert to grayscale
         gray_img = cv2.cvtColor(color_img, cv2.COLOR_BGR2GRAY)
 
-        # Convert to ROS Image message
-        header = response.grayscale_image.header
-        header.stamp = self.node.get_clock().now().to_msg()
+        # Convert the image to a ROS Image message (encoding "mono8")
         response.grayscale_image = self.bridge.cv2_to_imgmsg(gray_img, encoding="mono8")
 
-        self.node.get_logger().info("Successfully transform image to gray image!")
+        self.node.get_logger().info("Successfully transformed image to gray image!")
 
-        # Visualize the images
+        # Visualize the images side by side
         gray_bgr = cv2.cvtColor(gray_img, cv2.COLOR_GRAY2BGR)
         concatenated = np.hstack((color_img, gray_bgr))
 
@@ -174,3 +175,30 @@ class SineWaveReceiver:
         cv2.destroyAllWindows()
 
         return response
+
+    def update_params_callback(self):
+        """
+        Timer callback that checks for parameter updates.
+
+        If new parameters are detected via the parameter listener, update the internal state.
+        """
+        if self.param_listener.is_old(self.params):
+            # Retrieve new parameters
+            new_params = self.param_listener.get_params()
+
+            # Update internal state for publisher_frequency, amplitude, angular frequency, and phase
+            self.frequency = new_params.publisher_frequency
+            self.amplitude = new_params.amplitude
+            self.angular_frequency = new_params.angular_frequency
+            self.phase = new_params.phase
+
+            # Store the new parameters as current parameters
+            self.params = new_params
+
+            self.node.get_logger().info(
+                f"Parameters updated dynamically:\n"
+                f"Publisher frequency: {self.frequency:.2f} Hz\n"
+                f"Amplitude: {self.amplitude:.2f}\n"
+                f"Angular frequency: {self.angular_frequency:.2f}\n"
+                f"Phase: {self.phase:.2f}"
+            )
