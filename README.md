@@ -20,13 +20,13 @@ These are the extra packages to run the program:
 sudo apt-get update
 sudo apt-get install libcanberra-gtk-module
 sudo apt-get install libcanberra-gtk3-module
-sudo apt-get install ros-humble-plotjuggler-ros
-sudo apt-get install ros-humble-generate-parameter-library
-sudo apt-get install ros-humble-cv-bridge
+sudo apt-get install ros-${ROS_DISTRO}-plotjuggler-ros
+sudo apt-get install ros-${ROS_DISTRO}-generate-parameter-library
+sudo apt-get install ros-${ROS_DISTRO}-cv-bridge
 sudo apt-get install python3-colcon-common-extensions
 ```
 
-Or to simplify it you can run the install shell:
+Or to simplify it you can run the install shell(**please run it after cloning the repository**):
 
 ```
 . install.sh
