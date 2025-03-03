@@ -25,7 +25,7 @@ from sine_wave_py.sine_wave_parameters import sine_wave_parameters
 
 
 class SineWaveReceiver:
-    """Class to receive sine wave data and provide image conversion service with dynamic parameter updates."""
+    """receive sine wave data and provide image conversion service with dynamic parameter."""
 
     def __init__(self, node: Node):
         """
@@ -186,7 +186,8 @@ class SineWaveReceiver:
             # Retrieve new parameters
             new_params = self.param_listener.get_params()
 
-            # Update internal state for publisher_frequency, amplitude, angular frequency, and phase
+            # Update internal state for publisher_frequency, amplitude, angular
+            # frequency, and phase
             self.frequency = new_params.publisher_frequency
             self.amplitude = new_params.amplitude
             self.angular_frequency = new_params.angular_frequency

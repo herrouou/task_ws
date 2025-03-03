@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
+import sys
 import os
 from glob import glob
 from generate_parameter_library_py.setup_helper import generate_parameter_module
 
 package_name = "sine_wave_py"
 
+
 generate_parameter_module(
     "sine_wave_parameters", "config/sine_wave_parameters.yaml"  # Python  # YAML
 )
-
 
 setup(
     name=package_name,

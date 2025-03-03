@@ -7,19 +7,23 @@ on:
     branches: [ main ]
 
 jobs:
-  clang-format:
+  Code-format-check:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout repository
+      - name: Checkout clang format
         uses: actions/checkout@v3
       - name: Run clang-format check
         uses: DoozyX/clang-format-lint-action@v0.18.1
         with:
           source: '.'
           exclude: './third_party ./external'
-          extensions: 'h,cpp'
+          extensions: 'hpp,cpp'
           clangFormatVersion: 18
           style: file
+      - name: Checkout Python code style check
+        run: |
+          sudo apt install python3-ament-pycodestyle
+          ament_pycodestyle sine_wave_cpp sine_wave_py
 
   build:
     runs-on: ubuntu-22.04
@@ -42,6 +46,7 @@ jobs:
           sudo apt-get install -y ros-humble-generate-parameter-library
           sudo apt-get install -y ros-humble-ament-clang-format
           sudo apt-get install -y ros-humble-ament-cmake
+          sudo apt-get install -y libcanberra-gtk-module libcanberra-gtk3-module
           sudo apt-cache search ros-humble-cv-bridge && sudo apt-get install -y ros-humble-cv-bridge || echo "cv_bridge not available via apt"
 
       - name: Build with colcon
@@ -53,5 +58,5 @@ jobs:
         run: |
           source /opt/ros/humble/setup.bash
           source install/setup.bash
-          colcon test
+          colcon test --packages-select sine_wave_cpp sine_wave_py
           colcon test-result --verbose

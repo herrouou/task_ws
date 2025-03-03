@@ -132,7 +132,8 @@ class SineWavePublisher:
             self.angular_frequency = new_params.angular_frequency
             self.phase = new_params.phase
 
-            # If publisher frequency has changed, update frequency and recreate the timer
+            # If publisher frequency has changed, update frequency and recreate
+            # the timer
             if self.frequency != new_params.publisher_frequency:
                 self.frequency = new_params.publisher_frequency
                 self.timer.cancel()
