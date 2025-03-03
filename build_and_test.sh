@@ -6,6 +6,7 @@ unset GTK_PATH
 rm -rf build install log
 
 # build sine_wave_cpp and sine_wave_py
+source /opt/ros/humble/setup.bash
 echo "Start build: sine_wave_cpp and sine_wave_py..."
 colcon build --packages-select sine_wave_cpp sine_wave_py --cmake-args -DBUILD_TESTING=ON
 
