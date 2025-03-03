@@ -34,6 +34,7 @@ SineWaveReceiver::SineWaveReceiver(rclcpp::Node::SharedPtr node, const sine_wave
   phase_(params.phase),
   frequency_(params.publisher_frequency)
 {
+  param_listener_ = std::make_shared<sine_wave::ParamListener>(node_);
   // validate frequency
   if (frequency_ < 0.001 || frequency_ > 99999.9) {
     RCLCPP_ERROR(
@@ -155,4 +156,30 @@ void SineWaveReceiver::convertImageService(
   //   g_new_image_available = true;
   // }
   // g_img_cv.notify_one();
+}
+
+void SineWaveReceiver::updateParamsCallback()
+{
+  // Check if parameters have been updated via the parameter listener
+  if (param_listener_->is_old(params_)) {
+    // Retrieve new parameters
+    auto new_params = param_listener_->get_params();
+
+    // Update internal state for publisher_frequency, amplitude, angular frequency, and phase
+    frequency_ = new_params.publisher_frequency;
+    amplitude_ = new_params.amplitude;
+    angular_frequency_ = new_params.angular_frequency;
+    phase_ = new_params.phase;
+
+    // Store the new parameters as current parameters
+    params_ = new_params;
+    // RCLCPP_INFO(
+    //   node_->get_logger(),
+    //   "Parameters updated dynamically:\n"
+    //   "Publisher frequency: %.2f Hz\n"
+    //   "Amplitude: %.2f\n"
+    //   "Angular frequency: %.2f\n"
+    //   "Phase: %.2f",
+    //   frequency_, amplitude_, angular_frequency_, phase_);
+  }
 }

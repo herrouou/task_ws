@@ -49,6 +49,13 @@ private:
   void sinewaveCallback(const sine_wave_cpp::msg::Signal::SharedPtr msg);
 
   /**
+   * @brief Timer callback to check for parameter updates.
+   *
+   * If new parameters are detected, internal state is updated accordingly.
+   */
+  void updateParamsCallback();
+
+  /**
    * @brief image convert service
    * @param request the request of clinet is the raw image
    * @param response the response is a grayscale image
@@ -61,6 +68,9 @@ private:
   rclcpp::Node::SharedPtr node_;
   rclcpp::Subscription<sine_wave_cpp::msg::Signal>::SharedPtr subscription_;
   rclcpp::Service<sine_wave_cpp::srv::ConvertImage>::SharedPtr service_;
+  rclcpp::TimerBase::SharedPtr update_timer_;
+  std::shared_ptr<sine_wave::ParamListener> param_listener_;
+  sine_wave::Params params_;
 
   // Sine wave parameters
   double amplitude_;
